@@ -20,7 +20,7 @@ trainer:
         save_top_k: 1
         verbose: true
         save_on_train_epoch_end: false
-    - class_path: Regression.callbacks.ONNXExportCallback
+    - class_path: cph_regression.regression.callbacks.ONNXExportCallback
       init_args:
         output_dir: "GemstonePricePrediction/models"
         model_name: "gemstone_price_model"
@@ -33,7 +33,7 @@ trainer:
       name: "GemstonePriceTraining"
       default_hp_metric: false
 
-  max_epochs: 1
+  max_epochs: 3
   num_sanity_val_steps: 1
   check_val_every_n_epoch: 1
   log_every_n_steps: 1
@@ -43,7 +43,7 @@ trainer:
   default_root_dir: "GemstonePricePrediction/lightning_logs/GemstonePriceTraining"
 
 model:
-  class_path: Regression.modelmodule.ModelModuleRGS
+  class_path: cph_regression.regression.modelmodule.ModelModuleRGS
   init_args:
     lr: 0.0001
     weight_decay: 0.0
@@ -52,7 +52,7 @@ model:
     save_dir: "GemstonePricePrediction/models"
     name: "gemstone_price_model"
     model:
-      class_path: Regression.modelfactory.RegressionModel
+      class_path: cph_regression.regression.modelfactory.RegressionModel
       init_args:
         input_dim: 0  # Auto-set from datamodule via CLI linking
         hidden_layers: [128, 64, 32]
@@ -73,7 +73,7 @@ lr_scheduler:
     total_steps: 1000
 
 data:
-  class_path: Regression.datamodule.DataModuleRGS
+  class_path: cph_regression.regression.datamodule.DataModuleRGS
   init_args:
     csv_path: "GemstonePricePrediction/data/gemstone.csv"
     batch_size: 256
