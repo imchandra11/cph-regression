@@ -1,0 +1,179 @@
+# lightning.pytorch==2.6.0
+seed_everything: 0
+trainer:
+  accelerator: auto
+  strategy: auto
+  devices: auto
+  num_nodes: 1
+  precision: 16-mixed
+  logger:
+    class_path: lightning.pytorch.loggers.TensorBoardLogger
+    init_args:
+      save_dir: GemstonePricePrediction/lightning_logs
+      name: GemstonePriceTraining
+      version: null
+      log_graph: false
+      default_hp_metric: false
+      prefix: ''
+      sub_dir: null
+      comment: ''
+      purge_step: null
+      max_queue: 10
+      flush_secs: 120
+      filename_suffix: ''
+  callbacks:
+  - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+    init_args:
+      dirpath: null
+      filename: '{epoch}-{val_loss:.2f}.best'
+      monitor: val_loss
+      verbose: true
+      save_last: null
+      save_top_k: 1
+      save_on_exception: false
+      save_weights_only: false
+      mode: min
+      auto_insert_metric_name: true
+      every_n_train_steps: null
+      train_time_interval: null
+      every_n_epochs: null
+      save_on_train_epoch_end: false
+      enable_version_counter: true
+  - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+    init_args:
+      dirpath: null
+      filename: '{epoch}.last'
+      monitor: step
+      verbose: true
+      save_last: null
+      save_top_k: 1
+      save_on_exception: false
+      save_weights_only: false
+      mode: max
+      auto_insert_metric_name: true
+      every_n_train_steps: null
+      train_time_interval: null
+      every_n_epochs: null
+      save_on_train_epoch_end: false
+      enable_version_counter: true
+  - class_path: Regression.callbacks.ONNXExportCallback
+    init_args:
+      output_dir: GemstonePricePrediction/models
+      model_name: gemstone_price_model
+      input_dim: null
+  fast_dev_run: false
+  max_epochs: 10
+  min_epochs: null
+  max_steps: -1
+  min_steps: null
+  max_time: null
+  limit_train_batches: null
+  limit_val_batches: null
+  limit_test_batches: null
+  limit_predict_batches: null
+  overfit_batches: 0.0
+  val_check_interval: null
+  check_val_every_n_epoch: 1
+  num_sanity_val_steps: 1
+  log_every_n_steps: 1
+  enable_checkpointing: null
+  enable_progress_bar: null
+  enable_model_summary: null
+  accumulate_grad_batches: 1
+  gradient_clip_val: null
+  gradient_clip_algorithm: null
+  deterministic: null
+  benchmark: null
+  inference_mode: true
+  use_distributed_sampler: true
+  profiler: null
+  detect_anomaly: false
+  barebones: false
+  plugins: null
+  sync_batchnorm: false
+  reload_dataloaders_every_n_epochs: 0
+  default_root_dir: GemstonePricePrediction/lightning_logs/GemstonePriceTraining
+  enable_autolog_hparams: true
+  model_registry: null
+model:
+  class_path: Regression.modelmodule.ModelModuleRGS
+  init_args:
+    model:
+      class_path: Regression.modelfactory.RegressionModel
+      init_args:
+        input_dim: 23
+        hidden_layers:
+        - 128
+        - 64
+        - 32
+        dropout_rates:
+        - 0.15
+        - 0.1
+        - 0.05
+        activation: relu
+        output_dim: 1
+    lr: 0.0001
+    weight_decay: 0.0
+    lr_scheduler_factor: 0.5
+    lr_scheduler_patience: 5
+    save_dir: GemstonePricePrediction/models
+    name: gemstone_price_model
+data:
+  class_path: Regression.datamodule.DataModuleRGS
+  init_args:
+    csv_path: GemstonePricePrediction/data/gemstone.csv
+    batch_size: 256
+    num_workers: 0
+    val_split: 0.2
+    test_split: null
+    random_seed: 42
+    categorical_cols:
+    - cut
+    - color
+    - clarity
+    numeric_cols:
+    - carat
+    - depth
+    - table
+    - x
+    - y
+    - z
+    target_col: price
+    save_preprocessor: true
+    preprocessor_path: GemstonePricePrediction/models/preprocessor.joblib
+fit:
+  ckpt_path: null
+test:
+  ckpt_path: best
+optimizer:
+  class_path: torch.optim.Adam
+  init_args:
+    lr: 0.001
+    betas:
+    - 0.9
+    - 0.999
+    eps: 1.0e-08
+    weight_decay: 1.0e-05
+    amsgrad: false
+    foreach: null
+    maximize: false
+    capturable: false
+    differentiable: false
+    fused: null
+lr_scheduler:
+  class_path: torch.optim.lr_scheduler.OneCycleLR
+  init_args:
+    max_lr: 0.001
+    total_steps: 1000
+    epochs: null
+    steps_per_epoch: null
+    pct_start: 0.1
+    anneal_strategy: cos
+    cycle_momentum: true
+    base_momentum: 0.85
+    max_momentum: 0.95
+    div_factor: 25.0
+    final_div_factor: 10000.0
+    three_phase: false
+    last_epoch: -1
+    verbose: false
