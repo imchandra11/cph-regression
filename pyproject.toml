@@ -4,12 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cph-regression"
-version = "0.1.0"
+version = "0.1.1"
 description = "A generic, config-driven regression training package using PyTorch Lightning"
 readme = "README.md"
 requires-python = ">=3.8"
-license = {text = "MIT"}
-license-files = ["LICENSE"]
+license = "MIT"
 authors = [
     {name = "chandra", email = "chandra385123@gmail.com"}
 ]
@@ -18,7 +17,6 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -39,6 +37,7 @@ dependencies = [
     "joblib>=1.3.0",
     "onnx>=1.14.0",
     "onnxruntime>=1.16.0,<1.23.0",
+    "onnxscript>=0.1.0",
     "torchmetrics>=1.0.0",
     "pyyaml>=6.0",
     "fastapi>=0.104.0",

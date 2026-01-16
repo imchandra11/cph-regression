@@ -16,7 +16,7 @@ except FileNotFoundError:
 
 setup(
     name="cph-regression",
-    version="0.1.0",
+    version="0.1.1",
     author="chandra",
     author_email="chandra385123@gmail.com",
     description="A generic, config-driven regression training package using PyTorch Lightning",
@@ -50,6 +50,7 @@ setup(
         "joblib>=1.3.0",
         "onnx>=1.14.0",
         "onnxruntime>=1.16.0,<1.23.0",
+        "onnxscript>=0.1.0",
         "torchmetrics>=1.0.0",
         "pyyaml>=6.0",
         "fastapi>=0.104.0",

@@ -5,7 +5,7 @@ This package provides a reusable PyTorch Lightning pipeline for training
 regression models on any tabular dataset using YAML configuration files.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "chandra"
 
 from cph_regression.regression.modelmodule import ModelModuleRGS
